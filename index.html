@@ -13,7 +13,7 @@
     li {
       margin-top: 1px;
       margin-left: 1px;
-      background: #f81;
+      background: #8f1;
       list-style: none;
     }
   </style>
@@ -21,7 +21,7 @@
 <body>
   <button class="btn--thrash">updateThrash</button>
   <button class="btn--nothrash">updateNoThrash</button>
-  <p></p>
+  <p>初始状态</p>
   
   <script>
     let createEles = function() {
@@ -66,12 +66,13 @@
 
     createEles()
 
+    const p = document.querySelector('p')
     document.querySelector('.btn--thrash').addEventListener('click', function() {
-      console.log(getTime(updateThrash))
+      p.innerHTML = `点击了updateThrash，小方块增加5px，耗时：${getTime(updateThrash)}ms`
     })
 
     document.querySelector('.btn--nothrash').addEventListener('click', function() {
-      console.log(getTime(updateNoThrash))
+      p.innerHTML = `点击了updateNoThrash，小方块增加5px，耗时：${getTime(updateNoThrash)}ms`
     })
 
   </script>

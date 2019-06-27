@@ -1,0 +1,58 @@
+<html>
+<head>
+	<title>重绘性能测试</title>
+	<style type="text/css">
+		.every-insert,
+		.one-insert {
+			display: inline-block;
+			width: 300px;
+			vertical-align: top;
+		}
+	</style>
+</head>
+<body>
+	<h1>重绘性能测试</h1>
+	<div class="every-insert">
+		<button onclick="insertEvery()">
+			逐个插入
+		</button>
+		<span class="every-insert-time"></span>
+		<br>
+	</div>
+	<div class="one-insert">
+		<button onclick="insertOne()">
+			一次性插入
+		</button>
+		<span class="one-insert-time"></span>
+		<br>
+	</div>
+</body>
+<script>
+	function insertEvery() {
+		const start = Date.now()
+		for (var i = 1000; i >= 0; i--) {
+			document.querySelector('.every-insert').append('我是大傻逼')
+			// 这句主要是强制浏览器先渲染
+			document.querySelector('.every-insert').clientHeight
+		}
+		const end = Date.now()
+		document.querySelector('.every-insert-time').textContent = (end - start) + 'ms'
+	}
+
+
+	function insertOne() {
+		const start = Date.now()
+
+		const frag = new DocumentFragment()
+		for (var i = 1000; i >= 0; i--) {
+			frag.append('我是大傻逼')
+			// 即使先渲染了，也没有影响，应为此时dom没变化。
+			document.querySelector('.one-insert').clientHeight
+		}
+		document.querySelector('.one-insert').append(frag)
+		const end = Date.now()
+		document.querySelector('.one-insert-time').textContent = (end - start) + 'ms'
+	}
+</script>
+
+</html>

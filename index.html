@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    ul {
+      display: flex;
+      flex-flow: wrap;
+    }
+    li {
+      margin-top: 1px;
+      margin-left: 1px;
+      background: #8f1;
+      list-style: none;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn--thrash">updateThrash</button>
+  <button class="btn--nothrash">updateNoThrash</button>
+  <p>初始状态</p>
+  
+  <script>
+    let createEles = function() {
+      let ul = document.createElement('ul')
+      for (let i = 0; i < 1000; i++) {
+        let li = document.createElement('li')
+        li.style.width = '10px'
+        li.style.height = '10px'
+        ul.appendChild(li)
+      }
+      document.body.appendChild(ul)
+    }
+
+    // 直接增加li高度
+    let updateThrash = function(data) {
+      let lis = document.querySelectorAll('li')
+      for (let i = 0; i < lis.length; i++) {
+        lis[i].style.height = lis[i].getBoundingClientRect().height + 5 + 'px'
+        lis[i].style.background = '#f18'
+      }
+    }
+
+    // 使用fragment把ul脱离dom，再增加li高度
+    let updateNoThrash = function(data) {
+      let ul = document.querySelector('ul')
+      let fragment = document.createDocumentFragment()
+      fragment.appendChild(ul)
+      let lis = fragment.querySelectorAll('li')
+      for (let i = 0; i < lis.length; i++) {
+        lis[i].style.height = lis[i].style.height.replace('px', '') * 1 + 5 + 'px'
+        lis[i].style.background = '#f81'
+      }
+      document.body.appendChild(fragment)
+    }
+
+    let getTime = function(func) {
+      let start = Date.now()
+      func()
+      let end = Date.now()
+      return end - start
+    }
+
+    createEles()
+
+    const p = document.querySelector('p')
+    document.querySelector('.btn--thrash').addEventListener('click', function() {
+      p.innerHTML = `点击了updateThrash，小方块增加5px，耗时：${getTime(updateThrash)}ms`
+    })
+
+    document.querySelector('.btn--nothrash').addEventListener('click', function() {
+      p.innerHTML = `点击了updateNoThrash，小方块增加5px，耗时：${getTime(updateNoThrash)}ms`
+    })
+
+  </script>
+</body>
+</html>

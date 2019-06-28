@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .test {
+      display: flex;
+      justify-content: space-between;
+    }
+  .block-box {
+    position: relative;
+    width: 300px;
+    background: #eee;
+  }
+  .block {
+    width: 100px;
+    height: 10px;
+    background: blue;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .btn-group {
+    display: flex;
+    height: 100px;
+  }
+  .btn {
+    width: 200px;
+    height: 50px;
+    margin-right: 10px;
+    background: #ededed;
+    text-align: center;
+    line-height: 50px;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .btn text {
+    color: red;
+  }
+  </style>
+</head>
+<body>
+  <h3 id="title"></h3>
+  <div class="test">
+    <div class="block-box" id="demo">
+    </div>
+    <div class="btn-group">
+      <div class="btn" id="demo-boo">重排集中触发<text></text></div>
+      <div class="btn" id="demo-yay">重排拆分触发<text></text></div>
+    </div>
+  </div>
+ 
+  <script src="./libs/jquery.js"></script>
+  <script>
+  let Now;
+  if (typeof performance !== 'undefined' && performance.now) {
+    Now = function() {
+      return performance.now();
+    };
+  } else if (Date.now) {
+    Now = function() {
+      return Date.now();
+    };
+  } else {
+    Now = function() {
+      return new Date().getTime();
+    }
+  }
+
+  var root = $('#demo');
+
+  var $e = function(type) {
+    return $(document.createElement(type));
+  }
+
+  var Time = function(f) {
+    var s = Now();
+    f();
+    return (Now() - s) | 0;
+  };
+
+  const produceEl = function () {
+    let total = 100
+    for (let index = 0; index < total; index++) {
+      $('#demo').append($e('div').text('helllo').addClass('block'))
+    }
+
+    document.getElementById('title').innerHTML = `${total}个节点测试`
+  }
+
+  produceEl()
+
+  const updateMore = function() {
+    const els = document.querySelectorAll('.block')
+
+    for (let index = 0; index < els.length; index++) {
+      const el = els[index];
+      let r = (Math.random() * 255).toFixed(0)
+      let g = (Math.random() * 255).toFixed(0)
+      let b = (Math.random() * 255).toFixed(0)
+      let fz = (Math.random() * 20).toFixed(0)
+      
+      el.style.color = `rgb(${r}, ${g}, ${b})`
+      el.style.fontSize = `${fz}px`
+    }
+
+    for (let index = 0; index < els.length; index++) {
+      const el = els[index];
+      let ml = (Math.random() * 100).toFixed(0)
+      let l = (Math.random() * 10).toFixed(0)
+      let t = (Math.random() * 10).toFixed(0)
+      let w = (Math.random() * 10).toFixed(0)
+      let h = (Math.random() * 20).toFixed(0)
+      el.style.left = `${l}px`
+      el.style.top = `${t}px`
+      el.style.width = `${w}px`
+      el.style.height = `${h}px`
+      el.style.marginLeft = `${ml}px`
+      el.innerHTML = `${el.scrollHeight}`
+    }
+  
+  }
+
+  const updateLess = function() {
+    const els = document.querySelectorAll('.block')
+
+    for (let index = 0; index < els.length; index++) {
+      const el = els[index];
+      let r = (Math.random() * 255).toFixed(0)
+      let g = (Math.random() * 255).toFixed(0)
+      let b = (Math.random() * 255).toFixed(0)
+      let fz = (Math.random() * 20).toFixed(0)
+      
+      el.style.color = `rgb(${r}, ${g}, ${b})`
+      el.style.fontSize = `${fz}px`
+    }
+    let innerHTMLArr = []
+    for (let index = 0; index < els.length; index++) {
+      const el = els[index];
+     
+      innerHTMLArr.push(el.scrollHeight)
+    }
+
+    for (let index = 0; index < els.length; index++) {
+      const el = els[index];
+      let ml = (Math.random() * 100).toFixed(0)
+      let l = (Math.random() * 10).toFixed(0)
+      let t = (Math.random() * 10).toFixed(0)
+      let w = (Math.random() * 10).toFixed(0)
+      let h = (Math.random() * 20).toFixed(0)
+      el.style.left = `${l}px`
+      el.style.top = `${t}px`
+      el.style.width = `${w}px`
+      el.style.height = `${h}px`
+      el.style.marginLeft = `${ml}px`
+      el.innerHTML = `${innerHTMLArr[index]}`
+    }
+  }
+  
+
+  $('#demo-boo').click(function(){
+    let s = Time(updateMore)
+    $(this).children('text').text(`${s}ms`)
+  })
+
+  $('#demo-yay').click(function(){
+    let s = Time(updateLess)
+    $(this).children('text').text(`${s}ms`)
+  })
+  </script>
+</body>
+</html>

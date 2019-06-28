@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #box {
+        height: 100px;
+        width: 300px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid;
+      }
+      #inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #inner li {
+        height: 20px;
+        line-height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <ul id="inner"></ul>
+    </div>
+    <button onclick="runHardMode()">Hard</button>
+  </body>
+  <script>
+    function init() {
+      const ul = document.getElementById("inner");
+      let i = 0;
+      while (i < 20) {
+        const li = document.createElement("li");
+        li.innerText = i;
+        ul.appendChild(li);
+        i++;
+      }
+    }
+
+    let timer = undefined;
+    const step = 1;
+
+    function runHardMode() {
+      console.log("runHardMode");
+      const height = getInitHeight();
+      const inner = document.getElementById("inner");
+      timer = setInterval(() => {
+        inner.setAttribute(
+          "style",
+          `top: ${-1 * (step + Math.abs(inner.offsetTop))}px`
+        );
+        if (Math.abs(inner.offsetTop) > height) {
+          clearInterval(timer);
+        }
+      }, 0);
+    }
+
+    function getInitHeight() {
+      return document.getElementById("inner").offsetHeight;
+    }
+
+    window.onload = function() {
+      init();
+    };
+  </script>
+</html>

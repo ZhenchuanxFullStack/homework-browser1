@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div style="border: 1px solid red; text-align: center;">
+    <p>使用<b>DocumentFragment</b>来减少重排。1. 第一种情况，循环往容器里面添加 `div` 元素。 2. 循环往DocumentFragment里面添加元素，然后一次性添加到容器里面。3. 分两种情况去修改宽度和读取宽度</p>
+    <div style="display: flex; justify-content: space-around;">
+      <div>
+        <button id="first">重复插入元素</button>
+        <p id="time1" style='color: red'></p>
+      </div>
+      <div>
+        <button id="second">一次插入元素</button>
+        <p id="time2" style='color: green'></p>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-around;">
+      <div>
+        <button id="third">每次修改宽度每次读取</button>
+        <p id="time3" style='color: red'></p>
+      </div>
+      <div>
+        <button id="fourth">一次性修改完宽度再去读取</button>
+        <p id="time4" style='color: green'></p>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between">
+      <div id="container1" style="width: 400px;"></div>
+      <div id="container2" style="width: 400px;"></div>
+    </div>
+  </div>
+  <script>
+    var Now;
+    if (performance.now) {
+      Now = function() {
+        return performance.now();
+      };
+    } else if (Date.now) {
+      Now = function() {
+        return Date.now();
+      };
+    } else {
+      Now = function() {
+        return new Date().getTime();
+      }
+    }
+    var Time = function(f) {
+      var s = Now();
+      f();
+      return (Now() - s) | 0;
+    };
+
+    window.onload = function () {
+      const btn1 = document.querySelector("#first")
+      const btn2 = document.querySelector("#second")
+      const btn3 = document.querySelector("#third")
+      const btn4 = document.querySelector("#fourth")
+      const containerEl1 = document.querySelector("#container1")
+      const containerEl2 = document.querySelector("#container2")
+      const time1El = document.querySelector("#time1")
+      const time2El = document.querySelector("#time2")
+      const time3El = document.querySelector("#time3")
+      const time4El = document.querySelector("#time4")
+
+      function repeatReflow(el) {
+        for (i = 0; i < 2000; i++) {
+          const pEl = document.createElement('div')
+          const oText = document.createTextNode('测试数据' + i);
+          pEl.appendChild(oText)
+          el.appendChild(pEl)
+        }
+      }
+
+      function repeatReflowResize(el) {
+        const childs = el.children
+        for (i = 0; i < childs.length; i++) {
+          childs[i].style.width = '100px'
+          childs[i].fontSize = Number.parseInt(childs[i].style.width) - 80 + 'px'
+        }
+      }
+
+      function onceReflow (el) {
+        const fg = document.createDocumentFragment()
+        for (i = 0; i < 2000; i++) {
+          const pEl = document.createElement('div')
+          const oText = document.createTextNode('测试数据' + i);
+          pEl.appendChild(oText)
+          fg.appendChild(pEl)
+        }
+        el.appendChild(fg)
+      }
+
+      function onceReflowResize(el) {
+        const childs = el.children
+        for (i = 0; i < childs.length; i++) {
+          childs[i].style.width = '100px'
+        }
+
+        for (i = 0; i < childs.length; i++) {
+          childs[i].fontSize = Number.parseInt(childs[i].style.width) - 80 + 'px'
+        }
+      }
+
+      btn1.addEventListener("click", function () {
+        const time = Time(repeatReflow.bind(this, containerEl1))
+        time1El.innerHTML = time + 'ms'
+      })
+
+      btn2.addEventListener("click", function () {
+        const time = Time(onceReflow.bind(this, containerEl2))
+        time2El.innerHTML = time + 'ms'
+      })
+
+      btn3.addEventListener("click", function () {
+        const time = Time(repeatReflowResize.bind(this, containerEl1))
+        time3El.innerHTML = time + 'ms'
+      })
+
+      btn4.addEventListener("click", function () {
+        const time = Time(onceReflowResize.bind(this, containerEl2))
+        time4El.innerHTML = time + 'ms'
+      })
+    }
+  </script>
+</body>
+</html>
+

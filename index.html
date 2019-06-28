@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Test Redraw and Reflow</title>
+    <style>
+      #box {
+        border: 1px solid;
+        width: 80%;
+        margin: 10%;
+        overflow: hidden;
+      }
+      #box div {
+        float: left;
+        border: 1px solid #300fff;
+        width: 111px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn0" onclick="btnClick(this,handle0)">无优化</button
+    >每次新建的元素都立即 append 来显示<br />
+    <b>当次耗时:</b> <span></span> <b></b> <span></span>
+    <hr />
+    <button id="btn1" onclick="btnClick(this,handle1)">优化</button
+    >先添加到fragment后 , append fragment 一次性显示<br />
+    <b>当次耗时:</b> <span></span> <b></b> <span></span>
+    <hr />
+    <div id="box"></div>
+    <script>
+      // ARR_LENGTH , DIV_NUMBER 测试多次,多为负优化
+      const DIV_NUMBER = 10;
+      const LOOP_NUMBER = 10;
+      const ARR_LENGTH = 100;
+
+      const box = document.getElementById('box');
+      const lifts = new Array(ARR_LENGTH).fill('盒子怪');
+
+      // 每次清空和重新添加
+      function clearBox() {
+        box.innerHTML = '';
+      }
+      function appendToBox() {
+        let temp = new DocumentFragment();
+        for (let i = 1; i < DIV_NUMBER + 1; i++) {
+          const div = document.createElement('div');
+          div.innerHTML = `第 ${i} 号盒子`;
+          temp.appendChild(div);
+        }
+        box.appendChild(temp);
+      }
+      // 计时
+      function getTime(f) {
+        clearBox();
+        appendToBox();
+        let divs = box.querySelectorAll('div');
+        let start = Date.now();
+        f(divs);
+        let end = Date.now();
+        return end - start;
+      }
+      // 被计时函数 无优化, 每次直接显示到盒子中
+      function handle0(divs) {
+        divs.forEach((div, i) => {
+          for (let n = 0; n < ARR_LENGTH; n++) {
+            div.append(lifts[n]);
+            //没这句不行
+            div.clientHeight;
+          }
+        });
+      }
+      // 被计时函数 有负优化, 每次先加fragment ,再显示到盒子
+      function handle1(divs) {
+        let temp = new DocumentFragment();
+        divs.forEach((div, i) => {
+          temp.innerHTML = '';
+          for (let n = 0; n < ARR_LENGTH; n++) {
+            temp.append(lifts[n]);
+          }
+          div.appendChild(temp);
+        });
+      }
+      // 点击事件 , 传按钮和 被计时函数
+      function btnClick(e, f) {
+        const time = getTime(f);
+        e.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML =
+          time + 'ms';
+        return time;
+      }
+      // 自动测试 , 显示结果
+      function loop(btn, f) {
+        let sum = 0;
+        for (let i = 0; i < LOOP_NUMBER; i++) {
+          sum += btnClick(btn, f);
+        }
+        btn.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML =
+          LOOP_NUMBER + '次重复,数组长度为' + ARR_LENGTH + ',平均每次耗时:';
+        btn.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML =
+          sum / LOOP_NUMBER + 'ms';
+      }
+      (() => {
+        loop(document.getElementById('btn0'), handle0);
+        loop(document.getElementById('btn1'), handle1);
+      })();
+    </script>
+  </body>
+</html>

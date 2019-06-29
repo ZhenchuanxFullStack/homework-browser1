@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>重排重绘作业</title>
+    <style>
+        ul,
+        li {
+            list-style: none;
+        }
+
+        li {
+            font-size: 14px;
+        }
+
+        .content-l,
+        .content-r {
+            float: left;
+            width: 300px;
+            padding: 20px;
+            border: 2px solid #abc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content-l">
+        <button onclick="singleAppendAction()">单个插入500个li</button>
+        <ul id="lis-content-l"></ul>
+    </div>
+    <div class="content-r">
+        <button onclick="allAppend()">一次性插入500个li</button>
+        <ul id="lis-content-r"></ul>
+    </div>
+</body>
+
+</html>
+<script>
+    const cl = document.getElementById("lis-content-l");
+    const cr = document.getElementById("lis-content-r");
+    const len = 500;
+
+    function singleAppendAction() {
+        console.time('singleAppendAction')
+        cl.innerHTML = "";
+        for (let i = 0; i < len; i++) {
+            let oneLi = document.createElement("li");
+            oneLi.innerHTML = i + 1;
+            cl.appendChild(oneLi)
+        }
+        console.timeEnd('singleAppendAction')
+    }
+
+    function allAppend() {
+        console.time('allAppendAction')
+        cr.innerHTML = "";
+        let html = "";
+        for (let i = 0; i < len; i++) {
+            html += `<li>${i+1}</li>`
+        }
+        cr.innerHTML = html;
+        console.timeEnd('allAppendAction')
+    }
+</script>

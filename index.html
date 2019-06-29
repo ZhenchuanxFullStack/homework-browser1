@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>浏览器性能优化-减少DOM计算与reflow</title>
+</head>
+<body>
+    <ul id="container" style="height: 200px;overflow:auto;border: 1px solid #000">
+    </ul>
+    <button onclick="insertWithoutMerge()">逐条插入</button>
+    <button onclick="insertWithMerge()">合并插入</button>
+    <script src="main.js"></script>
+</body>
+</html>

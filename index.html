@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #btn-box {}
+
+        #show-box-1, #show-box-2 {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="btn-box">
+        <button id="btn-1">逐一插入列表项</button>
+
+        <button id="btn-2">一次插入全部列表项</button>
+
+        <button id="btn-3">每次修改读数同时</button>
+
+        <button id="btn-4">修改完成后再读数</button>
+
+        <button id="btn-5">删除逐一添加</button>
+
+        <button id="btn-6">删除统一添加全部</button>
+    </div>
+
+    <ul id="show-box-1"></ul>
+    <ul id="show-box-2"></ul>
+
+    <script>
+        window.onload = function () {
+            const showBox1 = document.getElementById('show-box-1')
+            const showBox2 = document.getElementById('show-box-2')
+
+            const btn1 = document.getElementById('btn-1')
+            btn1.addEventListener('click', function () {
+                console.time('逐一插入列表项')
+                for (let i = 0; i < 2000; i++) {
+                    const item = document.createElement('li')
+                    item.innerText = `第 ${i + 1} 项`
+                    showBox1.appendChild(item)
+                }
+                console.timeEnd('逐一插入列表项')
+            })
+
+            const btn2 = document.getElementById('btn-2')
+            btn2.addEventListener('click', function () {
+                console.time('一次插入全部列表项')
+                const frag = document.createDocumentFragment()
+                for (let i = 0; i < 2000; i++) {
+                    const item = document.createElement('li')
+                    item.innerText = `第 ${i + 1} 项`
+                    frag.appendChild(item)
+                }
+                showBox2.appendChild(frag)
+                console.timeEnd('一次插入全部列表项')
+            })
+
+            const btn3 = document.getElementById('btn-3')
+            btn3.addEventListener('click', function () {
+                console.time('每次修改读数同时')
+                const children = showBox1.children
+                const len = children.length
+                for (let i = 0; i < len; i++) {
+                    children[i].fontSize = '20px'
+                    children[i].style.height = Number.parseInt(children[i].fontSize) * 2 + 'px'
+                }
+                console.timeEnd('每次修改读数同时')
+            })
+
+            const btn4 = document.getElementById('btn-4')
+            btn4.addEventListener('click', function () {
+                console.time('修改完成后再读数')
+                const children = showBox2.children
+                const len = children.length
+                for (let i = 0; i < len; i++) {
+                    children[i].fontSize = '20px'
+                }
+                for (let i = 0; i < len; i++) {
+                    children[i].style.height = Number.parseInt(children[i].fontSize) * 2 + 'px'
+                }
+                console.timeEnd('修改完成后再读数')
+            })
+
+            const btn5 = document.getElementById('btn-5')
+            btn5.addEventListener('click', function () {
+                console.time('删除逐一添加')
+                showBox1.innerHTML = ''
+                for (let i = 0; i < 2000; i++) {
+                    const item = document.createElement('li')
+                    item.innerText = `第 ${i + 1} 项`
+                    item.style.height = '30px'
+                    showBox1.appendChild(item)
+                }
+                console.timeEnd('删除逐一添加')
+            })
+
+            const btn6 = document.getElementById('btn-6')
+            btn6.addEventListener('click', function () {
+                console.time('删除统一添加全部')
+                const frag = document.createDocumentFragment()
+                showBox2.innerHTML = ''
+                for (let i = 0; i < 2000; i++) {
+                    const item = document.createElement('li')
+                    item.innerText = `第 ${i + 1} 项`
+                    item.style.height = '30px'
+                    frag.appendChild(item)
+                }
+                showBox2.appendChild(frag)
+                console.timeEnd('删除统一添加全部')
+            })
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<button class="redraw">重绘</button>
+			<button class="relayout">重排</button>
+			<ul class="ul-container"></ul>
+		</div>
+		
+		<script type="text/javascript">	
+			ulContainer = document.querySelector('.ul-container')
+			//创建DOM节点
+			creatEl()
+			function creatEl(){
+				for(let i=0;i<1000;i++){
+					let liTag = document.createElement('li')
+					liTag.appendChild(document.createTextNode(`${i}`));
+					ulContainer.appendChild(liTag)
+				}
+			}
+			//给DOM节点改变颜色
+			function colorChange(){
+				let start = Date.now()
+				let liTags = document.querySelectorAll('li');
+				for(let i=0;i<liTags.length;i++){
+					liTags[i].style.color = 'red';
+				}
+				let end = Date.now()
+      			return end - start
+			}
+			//给DOM节点改变高度
+			function heightChange(){
+				let start = Date.now()
+				var fragment = document.createDocumentFragment();
+				let liTags = document.querySelectorAll('li');
+				for(let i=0;i<liTags.length;i++){
+					liTags[i].style.height = '50px';
+					fragment.appendChild(liTags[i]);
+				}
+				ulContainer.appendChild(fragment)
+				let end = Date.now()
+      			return end - start
+			}
+			//给按钮添加事件
+			 document.querySelector('.redraw').addEventListener('click', function() {
+		      console.log(colorChange())
+		    })
+		    document.querySelector('.relayout').addEventListener('click', function() {
+		      console.log(heightChange())
+		    })
+		</script>
+	</body>
+</html>

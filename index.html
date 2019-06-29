@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>重拍重绘</title>
+  <style>
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      text-align: center;
+    }
+
+    .container_left {
+      flex: 2;
+    }
+
+    .container_right {
+      flex: 2;
+    }
+
+    .container_center {
+      flex: 1;
+      text-align: left;
+      border: 1px solid rgb(114, 245, 7);
+    }
+
+    button {
+      width: 100px;
+      height: 30px;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+
+    .container_right .box,
+    .container_left .box {
+      width: 100px;
+      height: 30px;
+      margin: 5px auto;
+      background: rgb(243, 228, 19);
+    }
+
+    .box.reflow-active {
+      width: 200px;
+      margin-top: 10px;
+    }
+
+    .box.repaint-active {
+      background: #4621cc;
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="reset()">reset</button>
+  <div class="container">
+    <div class="container_left">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+
+      <button onclick="Reflow()">Reflow</button>
+      <button onclick="optimizeReflow()">optimizeReflow</button>
+      <br>
+      <!-- <button onclick="appendChildReflow()">插入节点</button> -->
+      <!-- <button onclick="optimizeappendChildReflow()">优化插入节点</button> -->
+    </div>
+    <div class="container_center">
+      <p>
+        <h3>
+          重排：
+        </h3>
+        1、改变盒子宽度
+        <br>
+        2、改变盒子padding
+        <br>
+        3、插入子节点
+      </p>
+      <p>
+        <h3>
+          重绘：
+        </h3>
+        1、改变盒子颜色
+      </p>
+      <p>
+        <h3>
+          优化思路：
+        </h3>
+        1、切换类名
+        <br>
+        <!-- 2、使用文档片段创建一个子树，然后再拷贝到文档中 -->
+      </p>
+    </div>
+    <div class="container_right">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <button onclick="Repaint()">Repaint</button>
+      <button onclick="optimizeRepaint()">optimizeRepaint</button>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery.min.js"></script>
+  <script charset="utf-8">
+    function reset() {
+      window.location.reload();
+    }
+    function Reflow() {
+      console.time('Reflow')
+      $('.container_left .box').each((index, ele) => {
+        $(ele).css({
+          'width': '200px',
+          'margin-top': '10px',
+        })
+      })
+      console.timeEnd('Reflow')
+    }
+    function optimizeReflow() {
+      console.time('optimizeReflow')
+      $('.container_left .box').each((index, ele) => {
+        $(ele).addClass('reflow-active')
+      })
+      console.timeEnd('optimizeReflow')
+    }
+    // function appendChildReflow() {
+    //   console.time('optimizeReflow')
+    //   $('.container_left .box').each((index, ele) => {
+    //     var childDom = document.createElement('div')
+    //     $(childDom).css({
+    //       'width': '50px',
+    //       'height': '30px',
+    //       'background': '#db39ab',
+    //       'margin': '0 auto'
+    //     })
+    //     $(ele).append(childDom)
+    //   })
+    //   console.timeEnd('optimizeReflow')
+    // }
+    // function optimizeappendChildReflow() {
+    //   console.time('optimizeappendChildReflow')
+    //   var vDom = document.createDocumentFragment()
+    //   var div = document.createElement('div')
+    //   var appendChild = vDom.appendChild(div)
+    //   appendChild.innerHTML = 'vdom'
+    //   $(appendChild).css({
+    //     'width': '50px',
+    //     'height': '30px',
+    //     'background': '#db39ab',
+    //     'margin': '0 auto'
+    //   })
+    //   $('.container_left .box').each((index, ele) => {
+    //     $(ele).append(vDom)
+    //   })
+    //   console.timeEnd('optimizeappendChildReflow')
+    // }
+    function Repaint() {
+      console.time('Repaint')
+      $('.container_right .box').each((index, ele) => {
+        $(ele).css({
+          'background': '#4621cc'
+        })
+      })
+      console.timeEnd('Repaint')
+    }
+    function optimizeRepaint() {
+      console.time('optimizeRepaint')
+      $('.container_right .box').each((index, ele) => {
+        $(ele).addClass('repaint-active')
+      })
+      console.timeEnd('optimizeRepaint')
+    }
+  </script>
+</body>
+
+</html>

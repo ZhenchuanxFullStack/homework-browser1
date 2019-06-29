@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>浏览器性能优化-重绘/重排</title>
+</head>
+<body>
+  <button id="createList" onclick="addList()">创建列表</button>
+  <button id="createList2" onclick="addList2()">优化创建列表</button>
+  <button id="changeSize">修改字体大小</button>
+  <button id="changeSize">优化修改字体大小</button>
+  <ul id="ul"></ul>
+  <script>
+    let count = 50000
+    let app = document.getElementById('ul')
+    function addList(){
+      let start = Date.now()
+      for(let i = 0; i <= count; i++) {
+        let liEl = document.createElement('li')
+        liEl.innerText = `列表${i}`
+        app.appendChild(liEl)
+      }
+      console.log('addEndTimes:' + (Date.now() - start)/1000 + 's')
+    }
+    function addList2(){
+      let start = Date.now()
+      for(let i = 0; i <= count; i++) {
+        let liEl = document.createElement('li')
+        liEl.innerText = `列表${i}`
+        app.appendChild(liEl)
+      }
+      console.log('addEndTimes:' + (Date.now() - start)/1000 + 's')
+    }
+  </script>
+</body>
+</html>

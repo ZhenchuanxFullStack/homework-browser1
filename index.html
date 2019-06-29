@@ -66,8 +66,8 @@
                 const children = showBox1.children
                 const len = children.length
                 for (let i = 0; i < len; i++) {
-                    children[i].style.height = '40px'
-                    children[i].fontSize = Number.parseInt(children[i].style.height) / 2 + 'px'
+                    children[i].fontSize = '20px'
+                    children[i].style.height = Number.parseInt(children[i].fontSize) * 2 + 'px'
                 }
                 console.timeEnd('每次修改读数同时')
             })
@@ -78,10 +78,10 @@
                 const children = showBox2.children
                 const len = children.length
                 for (let i = 0; i < len; i++) {
-                    children[i].style.height = '40px'
+                    children[i].fontSize = '20px'
                 }
                 for (let i = 0; i < len; i++) {
-                    children[i].fontSize = Number.parseInt(children[i].style.height) / 2 + 'px'
+                    children[i].style.height = Number.parseInt(children[i].fontSize) * 2 + 'px'
                 }
                 console.timeEnd('修改完成后再读数')
             })

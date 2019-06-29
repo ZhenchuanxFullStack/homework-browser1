@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>重排测试 性能相差大约4倍</title>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+<body>
+<button id="reset">重排</button> <button id="noReset">不重排</button>
+<div class="time"></div>
+<ol id="container"></ol>
+
+<script>
+    var reset = $('#reset'), noReset = $('#noReset'), container = $('#container'), time = $('.time');
+
+    reset.on('click', function () {
+        var i = 0, l = 10000, startTime = new Date();
+        container.empty();
+        for(i; i < l; i++) {
+            container.prepend(`<li>${i}</li>`);
+        }
+        var endTime = new Date();
+        time.text(`耗费毫秒：${endTime - startTime}`);
+    });
+
+    noReset.on('click', function () {
+        var i = 0,l = 10000, startTime = new Date(), html = '';
+        for(i; i < l; i++) {
+            html = `<li>${i}</li>${html}`;
+        }
+        container.empty().append(html);
+        var endTime = new Date();
+        time.text(`耗费毫秒：${endTime - startTime}`);
+    });
+</script>
+</body>
+</html>

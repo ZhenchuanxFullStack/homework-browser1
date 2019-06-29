@@ -7,32 +7,51 @@
   <title>浏览器性能优化-重绘/重排</title>
 </head>
 <body>
-  <button id="createList" onclick="addList()">创建列表</button>
-  <button id="createList2" onclick="addList2()">优化创建列表</button>
-  <button id="changeSize">修改字体大小</button>
-  <button id="changeSize">优化修改字体大小</button>
+  <button id="createList">修改颜色和添加边框</button>
+  <button id="createList2" onclick="addList2()">修改颜色</button>
   <ul id="ul"></ul>
+  <div id="box"></div>
   <script>
-    let count = 50000
-    let app = document.getElementById('ul')
+	let ulEl = document.getElementById('ul')
+	let boxEl = document.getElementById('box')
+	for(var i = 0; i <= 500; i++) {
+		let li = document.createElement('li')
+		let p = document.createElement('p')
+		li.innerHTML = 'UL'+i
+		p.innerHTML = 'P'+i
+		ulEl.appendChild(li)
+		boxEl.appendChild(p)
+	}
+    let liEls = document.getElementsByTagName('li') 
+	let pEls = document.getElementsByTagName('p') 
     function addList(){
-      let start = Date.now()
-      for(let i = 0; i <= count; i++) {
-        let liEl = document.createElement('li')
-        liEl.innerText = `列表${i}`
-        app.appendChild(liEl)
+      for(let i = 0; i < liEls.length; i++) {
+        liEls[i].style.borderTop = '1px solid red';
       }
-      console.log('addEndTimes:' + (Date.now() - start)/1000 + 's')
+	  for(let i = 0; i < pEls.length; i++) {
+        pEls[i].style.color = 'red';
+      }
     }
     function addList2(){
-      let start = Date.now()
-      for(let i = 0; i <= count; i++) {
-        let liEl = document.createElement('li')
-        liEl.innerText = `列表${i}`
-        app.appendChild(liEl)
-      }
-      console.log('addEndTimes:' + (Date.now() - start)/1000 + 's')
+		for(let i = 0; i < liEls.length; i++) {
+			liEls[i].style.color = 'blue';
+        }
+		for(let i = 0; i < pEls.length; i++) {
+			pEls[i].style.color = 'red';
+		}
     }
+	document.getElementById('createList').addEventListener('click', function(){
+		let s = performance.now()
+		addList()
+		console.log(performance.now()-s)
+	})
+	document.getElementById('createList2').addEventListener('click', function(){
+		let s = performance.now()
+		addList2()
+		console.log(performance.now()-s)
+	})
+	// 一台垃圾电脑上xp系统测试修改颜色平均时间8ms左右;
+	// 。。。。。。。。。。。。修改颜色和添加边框平均时间45ms左右
   </script>
 </body>
 </html>

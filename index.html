@@ -1,0 +1,80 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>重排重绘性能测试</title>
+	<style type="text/css">
+        ul{
+            padding: 0;
+            margin: 0;
+        }
+        li{
+            list-style: none;
+        }
+        button{
+            width: 120px;
+            height: 30x;
+        }
+        .every-insert, .all-insert{
+            float: left;
+            width: 400px;
+        }
+        .every-box li,.all-box li{
+            margin-top: 20px;
+            width: 200px;
+            height: 20px;
+            font-size: 14px;
+            color: #fff;
+            background: #7cf;
+        }
+	</style>
+</head>
+<body>
+	<h1>重排重绘性能测试</h1>
+	<div class="every-insert">
+		<button onclick="insertEvery()">
+			逐个插入
+		</button>
+        <span class="every-insert-time"></span>
+		<br>
+        <ul class="every-box" id="everyBox">
+            
+        </ul>
+	</div>
+	<div class="all-insert">
+		<button onclick="allInsert()">
+			一次性插入
+		</button>
+		<span class="all-insert-time"></span>
+		<br>
+        <ul class="all-box" id="allBox">
+            
+        </ul>
+	</div>
+    <script>
+        function insertEvery() {
+            var startTime = Date.now();
+           
+            for(var i = 0;i < 500;i++) {
+                var str = '<li>我是li标签</li>';
+                document.getElementById('everyBox').innerHTML += str;
+            }
+
+            var endTime = Date.now();
+            document.querySelector('.every-insert-time').innerText = (endTime - startTime) +'ms';
+        }
+
+        function allInsert() {
+            var startTime = Date.now();
+            var strHtml = '';
+            
+            for(var i = 0;i < 500;i++) {
+                strHtml += '<li>我是li标签</li>';
+            }
+            document.getElementById('allBox').innerHTML = strHtml;
+            
+            var endTime = Date.now();
+            document.querySelector('.all-insert-time').innerText = (endTime - startTime) +'ms';
+        }
+    </script>
+</body>
+</html>

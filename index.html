@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+    <head>
+         <meta charset="UTF-8">
+         <title>浏览器重绘重排</title>
+         <style type="text/css">
+             *{
+                padding: 0;
+                margin: 0;
+             }
+             li{
+                list-style: none;
+             }
+             .wrapper{
+                width: 500px;
+                margin: 20px auto;
+                display: flex;
+             }
+                .wrapper section{
+                    width: 250px;
+                    flex: 1;
+                }
+                .poemList li{
+                    width: 100%;
+                    text-align: center;
+                }
+                .btn{
+                    margin: 5px auto 0;
+                    text-align: center;
+                }
+                .btn button{
+                    padding: 5px 10px;
+                }
+                .timeOutput{
+                    width: 100%;
+                    text-align: center;
+                }
+                .active{
+                    color:#38c411;
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+
+         </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <section class="normalArea">
+                <ul class="poemList" id="poemListNormal">
+                    <li>关关雎鸠，在河之洲。</li>
+                    <li>窈窕淑女，君子好逑。</li>
+                    <li>参差荇菜，左右流之。</li>
+                    <li>窈窕淑女，寤寐求之。</li>
+                    <li>求之不得，寤寐思服。</li>
+                    <li>悠哉悠哉，辗转反侧。</li>
+                    <li>参差荇菜，左右采之。</li>
+                    <li>窈窕淑女，琴瑟友之。</li>
+                    <li>参差荇菜，左右芼之。</li>
+                    <li>窈窕淑女，钟鼓乐之。</li>
+                </ul>
+                <div class="btn">
+                    <button id="btnNormal">不优化</button>
+                </div>
+                <p class="timeOutput" id="timeNormal"><span ></span></p>
+            </section>
+
+
+            <section class="optimizeArea">
+                <ul class="poemList" id="poemListOptimize">
+                    <li>关关雎鸠，在河之洲。</li>
+                    <li>窈窕淑女，君子好逑。</li>
+                    <li>参差荇菜，左右流之。</li>
+                    <li>窈窕淑女，寤寐求之。</li>
+                    <li>求之不得，寤寐思服。</li>
+                    <li>悠哉悠哉，辗转反侧。</li>
+                    <li>参差荇菜，左右采之。</li>
+                    <li>窈窕淑女，琴瑟友之。</li>
+                    <li>参差荇菜，左右芼之。</li>
+                    <li>窈窕淑女，钟鼓乐之。</li>
+                </ul>
+                <div class="btn">
+                    <button id="btnOptimize">优化</button>
+                </div>
+                <p class="timeOutput" id="timeOptimize"></p>
+            </section>
+        </div>
+
+
+        <script type="text/javascript">
+            
+            function changeSth(){
+                let timeStart = window.performance.now();
+                let poems = document.querySelectorAll("#poemListNormal > li");
+                for(let i = 0; i < poems.length; i++){
+                    poems[i].style.color = "#38c411";
+                    poems[i].style.fontSize = "20px";
+                    poems[i].style.fontWeight = "bold";
+                }    
+
+                let timeEnd = window.performance.now();
+                document.getElementById("timeNormal").innerText = Math.round((timeEnd - timeStart) * 1000) + "ms"
+
+            }
+
+
+            function changeSthOptimize(){
+                let timeStart = window.performance.now();
+                let poems = document.querySelectorAll("#poemListOptimize > li");
+                for(let i = 0; i < poems.length; i++){
+                    poems[i].classList.add("active");
+                }    
+
+                let timeEnd = window.performance.now();
+                document.getElementById("timeOptimize").innerText = Math.round((timeEnd - timeStart) * 1000) + "ms"
+            }
+
+
+            document.getElementById("btnNormal").onclick = changeSth;
+            document.getElementById("btnOptimize").onclick = changeSthOptimize;
+        </script>
+    </body>
+</html>

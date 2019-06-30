@@ -34,6 +34,7 @@
 	position: relative;
 	margin: 5px 0;
 	padding: 10px;
+	width: 400px;
 	transform: translateX(0px);
 	background-color: #efefef;
 	font-size: 12px;

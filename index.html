@@ -12,13 +12,13 @@
 
 <body>
 	<div class="container">
-		<h2 class="ttl">不同渲染流程的时间对比实验</h2>
+		<h2 class="ttl">不同关键渲染路径的耗时实验</h2>
 		<pre class="sum">
-			以下每个测试单元中，我们都会在x轴随机距离移动所有列表项。不同点如下：
-			多次重新布局：在每次迭代中，使原布局失效同时重新计算布局。
-			一次重新布局：在每次迭代中，使元布局失效，但只在最后重新计算一次布局。
-			重绘：在每次迭代中，使原绘画失效同时重新绘制。
-			重新合成：在每次迭代中，使合成失效并重新合成。
+			以下测试单元的共同目标是“将1000个列表项随机在x轴移动”。我们考察以下策略会对性能造成影响：
+			在【每次迭代都重新计算布局】中：每次迭代都把原布局失效掉，同时重新计算布局。
+			在【仅重新计算一次布局】中：每次迭代都把原布局失效掉，但只重新计算一次布局。
+			在【仅重绘】中：每次迭代都把原绘画失效掉，同时重新绘制。
+			在【仅重新合成】中：每次迭代都把原合成失效掉，同时重新合成。
 		</pre>
 		<div class="operate">
 			<div class="operate_item j-init">
@@ -26,19 +26,19 @@
 				<span>--</span>
 			</div>
 			<div class="operate_item j-multipleLayout">
-				<button>多次重新布局</button>
+				<button>每次迭代都重新计算布局(layout update)</button>
 				<span>--</span>
 			</div>
 			<div class="operate_item j-singleLayout">
-				<button>一次重新布局</button>
+				<button>仅重新计算一次布局(layout update)</button>
 				<span>--</span>
 			</div>
 			<div class="operate_item j-paint">
-				<button>重绘</button>
+				<button>仅重绘(paint upate)</button>
 				<span>--</span>
 			</div>
 			<div class="operate_item j-composite">
-				<button>重新合成</button>
+				<button>仅重新合成(composite update)</button>
 				<span>--</span>
 			</div>
 		</div>

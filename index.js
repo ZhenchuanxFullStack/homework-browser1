@@ -2,11 +2,12 @@ var elm_list = document.getElementById("list"),
 	elm_multipleLayout = document.getElementsByClassName("j-multipleLayout")[0],
 	elm_singleLayout = document.getElementsByClassName("j-singleLayout")[0],
 	elm_paint = document.getElementsByClassName("j-paint")[0],
-	elm_composite = document.getElementsByClassName("j-composite")[0];
+	elm_composite = document.getElementsByClassName("j-composite")[0],
+	elm_init = document.getElementsByClassName("j-init")[0];
 
 /* 初始化界面 */
 function init() {
-	var num = 1200,
+	var num = 1000,
 		node_ul = document.createElement("ul");
 	while (num > 0) {
 		var node_li = document.createElement("li");
@@ -23,54 +24,52 @@ function init() {
 		translateX(item);
 	});
 
-	// 监听 - 多次重新布局
+	// 监听 - 多次重新布局按钮
 	elm_multipleLayout.addEventListener("click", function(e) {
 		var tg = e.target,
 			timestamp = null,
-			elm_multipleLayout_txt = elm_multipleLayout.getElementsByTagName(
-				"span"
-			)[0];
+			elm_txt = this.getElementsByTagName("span")[0];
 		if (tg.tagName !== "BUTTON") return;
 
-		elm_multipleLayout_txt.innerText = "";
+		elm_txt.innerText = "";
 		timestamp = performance.now();
 		multipleLayout();
 		timestamp -= performance.now();
-		elm_multipleLayout_txt.innerText = `${Math.abs(Math.round(timestamp))}ms`;
+		elm_txt.innerText = `${Math.abs(Math.round(timestamp))}ms`;
 		tg.disabled = "disabled";
 	});
 
-	// 监听 - 一次重新布局
+	// 监听 - 一次重新布局按钮
 	elm_singleLayout.addEventListener("click", function(e) {
 		var tg = e.target,
 			timestamp = null,
-			elm_singleLayout_txt = elm_singleLayout.getElementsByTagName("span")[0];
+			elm_txt = this.getElementsByTagName("span")[0];
 		if (tg.tagName !== "BUTTON") return;
 
-		elm_singleLayout_txt.innerText = "";
+		elm_txt.innerText = "";
 		timestamp = performance.now();
 		singleLayout();
 		timestamp -= performance.now();
-		elm_singleLayout_txt.innerText = `${Math.abs(Math.round(timestamp))}ms`;
+		elm_txt.innerText = `${Math.abs(Math.round(timestamp))}ms`;
 		tg.disabled = "disabled";
 	});
 
-	// 监听 - 重绘
+	// 监听 - 重绘按钮
 	elm_paint.addEventListener("click", function(e) {
 		var tg = e.target,
 			timestamp = null,
-			elm_paint_txt = elm_paint.getElementsByTagName("span")[0];
+			elm_txt = this.getElementsByTagName("span")[0];
 		if (tg.tagName !== "BUTTON") return;
 
-		elm_paint_txt.innerText = "";
+		elm_txt.innerText = "";
 		timestamp = performance.now();
 		paint();
 		timestamp -= performance.now();
-		elm_paint_txt.innerText = `${Math.abs(Math.round(timestamp))}ms`;
+		elm_txt.innerText = `${Math.abs(Math.round(timestamp))}ms`;
 		tg.disabled = "disabled";
 	});
 
-	// 监听 - 重新合成
+	// 监听 - 重新合成按钮
 	elm_composite.addEventListener("click", function(e) {
 		var tg = e.target,
 			timestamp = null,
@@ -131,23 +130,21 @@ function composite() {
 /* 公共业务 - 移动 */
 function translateX(elm) {
 	elm.style.transform = `
-	translateX(${Math.round(Math.random() * 20)}px)
+	translateX(${Math.round(Math.random() * 100)}px)
 	`;
 }
 
-/* start */
-var elm_init = document.getElementsByClassName("j-init")[0];
-// 监听按钮 - 生成内容
+/* 监听 - 初始化按钮 */
 elm_init.addEventListener("click", function(e) {
 	var tg = e.target,
 		timestamp = null,
-		elm_init_txt = elm_init.getElementsByTagName("span")[0];
+		elm_txt = this.getElementsByTagName("span")[0];
 	if (tg.tagName !== "BUTTON") return;
-	elm_init_txt.innerText = "";
+	elm_txt.innerText = "";
 	timestamp = performance.now();
 	init();
 	timestamp -= performance.now();
-	elm_init_txt.innerText = `${Math.abs(Math.round(timestamp))}ms`;
-	elm_init.getElementsByTagName("button")[0].disabled = "disabled";
+	elm_txt.innerText = `${Math.abs(Math.round(timestamp))}ms`;
+	this.getElementsByTagName("button")[0].disabled = "disabled";
 });
 elm_init.getElementsByTagName("button")[0].click();

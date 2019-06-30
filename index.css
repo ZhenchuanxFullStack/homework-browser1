@@ -1,0 +1,43 @@
+.container {
+	padding: 20px;
+}
+.container .sum{
+	white-space: pre-line;
+	font-size: 14px;
+	line-height: 1.5;
+	color: 666;
+}
+.operate {
+	padding: 10px;
+}
+.operate .operate_item {
+	margin-bottom: 10px;
+}
+.operate button {
+	padding: 10px 20px;
+	font-size: 14px;
+	line-height: 1;
+	border: 1px solid #666;
+	border-radius: 4px;
+}
+.operate span {
+	margin-left: 20px;
+	font-size: 14px;
+	line-height: 1.5;
+	vertical-align: middle;
+}
+#list ul,
+#list li {
+	list-style: none;
+}
+#list ul li {
+	position: relative;
+	margin: 5px 0;
+	padding: 10px;
+	width: 400px;
+	transform: translateX(0px);
+	background-color: #efefef;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #666;
+}

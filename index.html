@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>浏览器渲染原理 - layout\paint\composite成本测试</title>
+	<link rel="stylesheet" href="./normalize.css">
+	<link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+	<div class="container">
+		<h2 class="ttl">不同关键渲染路径的耗时实验</h2>
+		<pre class="sum">
+			以下测试单元的共同目标是“将1000个列表项随机在x轴移动”。我们考察以下策略会对性能造成影响：
+			在【每次迭代都重新计算布局】中：每次迭代都把原布局失效掉，同时重新计算布局。
+			在【仅重新计算一次布局】中：每次迭代都把原布局失效掉，但只重新计算一次布局。
+			在【仅重绘】中：每次迭代都把原绘画失效掉，同时重新绘制。
+			在【仅重新合成】中：每次迭代都把原合成失效掉，同时重新合成。
+		</pre>
+		<div class="operate">
+			<div class="operate_item j-init">
+				<button>初始化节点</button>
+				<span>--</span>
+			</div>
+			<div class="operate_item j-multipleLayout">
+				<button>每次迭代都重新计算布局(layout update)</button>
+				<span>--</span>
+			</div>
+			<div class="operate_item j-singleLayout">
+				<button>仅重新计算一次布局(layout update)</button>
+				<span>--</span>
+			</div>
+			<div class="operate_item j-paint">
+				<button>仅重绘(paint upate)</button>
+				<span>--</span>
+			</div>
+			<div class="operate_item j-composite">
+				<button>仅重新合成(composite update)</button>
+				<span>--</span>
+			</div>
+		</div>
+		<div id="list"></div>
+	</div>
+	<script src="./index.js"></script>
+</body>
+
+</html>

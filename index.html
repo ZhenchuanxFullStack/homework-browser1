@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    .left,
+    .right {
+      width: 50%;
+      float: left;
+      border: 1px solid black;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="left">
+      <button id="btn1">多次插入</button>
+      <p id="time1"></p>
+      <ul id="list1"></ul>
+    </div>
+    <div class="right">
+      <button id="btn2">一次性插入</button>
+      <p id="time2"></p>
+      <ul id="list2"></ul>
+    </div>
+  </div>
+
+  <script>
+    let btn1 = document.getElementById('btn1')
+    let btn2 = document.getElementById('btn2')
+
+    function appendDataToElement(element, n) {
+			let li
+			for (let i = 0; i < n; i++) {
+				li = document.createElement('li')
+					li.textContent = i
+					element.appendChild(li)
+          element.clientHeight
+			}
+		}
+
+    btn1.onclick = function () {
+      const beginTime1 = new Date().getTime()
+      const list1 = document.getElementById('list1')
+      appendDataToElement(list1, 100)
+      const finishTime1 = new Date().getTime()
+      document.getElementById('time1').textContent = finishTime1 - beginTime1 + 'ms'
+    }
+
+    btn2.onclick = function () {
+      const beginTime2 = new Date().getTime()
+      const  fragment= document.createDocumentFragment()
+      appendDataToElement(fragment, 100)
+      document.getElementById('list2').appendChild(fragment)
+      const finishTime2 = new Date().getTime()
+      document.getElementById('time2').textContent = finishTime2 - beginTime2 + 'ms'
+    }
+
+
+  </script>
+</body>
+
+</html>

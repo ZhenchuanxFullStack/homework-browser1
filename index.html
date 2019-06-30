@@ -7,51 +7,63 @@
   <title>浏览器性能优化-重绘/重排</title>
 </head>
 <body>
-  <button id="createList">修改颜色和添加边框</button>
+	<button id="createList">添加边框</button>
+	<button id="createList3">修改边框颜色</button>
   <button id="createList2" onclick="addList2()">修改颜色</button>
   <ul id="ul"></ul>
-  <div id="box"></div>
   <script>
 	let ulEl = document.getElementById('ul')
-	let boxEl = document.getElementById('box')
-	for(var i = 0; i <= 500; i++) {
+	for(var i = 0; i <= 5000; i++) {
 		let li = document.createElement('li')
 		let p = document.createElement('p')
 		li.innerHTML = 'UL'+i
 		p.innerHTML = 'P'+i
 		ulEl.appendChild(li)
-		boxEl.appendChild(p)
 	}
-    let liEls = document.getElementsByTagName('li') 
-	let pEls = document.getElementsByTagName('p') 
-    function addList(){
-      for(let i = 0; i < liEls.length; i++) {
-        liEls[i].style.borderTop = '1px solid red';
-      }
-	  for(let i = 0; i < pEls.length; i++) {
-        pEls[i].style.color = 'red';
-      }
-    }
-    function addList2(){
+  let liEls = document.getElementsByTagName('li')
+	let cal = null
+	function addList(getWidth){
 		for(let i = 0; i < liEls.length; i++) {
-			liEls[i].style.color = 'blue';
-        }
-		for(let i = 0; i < pEls.length; i++) {
-			pEls[i].style.color = 'red';
+			cal = getWidth ? liEls[i].offsetWidth : null
+			liEls[i].style.borderLeft = '1px solid red';
 		}
-    }
+	}
+	function addList2(getWidth){
+		for(let i = 0; i < liEls.length; i++) {
+			cal = getWidth ? liEls[i].offsetWidth : null
+			liEls[i].style.color = 'blue';
+		}
+	}
+	function addList3(getWidth) {
+		for(let i = 0; i < liEls.length; i++) {
+			cal = getWidth ? liEls[i].offsetWidth : null
+			liEls[i].style.borderLeft = '1px solid blue';
+		}
+	}
 	document.getElementById('createList').addEventListener('click', function(){
 		let s = performance.now()
-		addList()
-		console.log(performance.now()-s)
+		addList(1)
+		console.log((performance.now()-s)/1000)
 	})
 	document.getElementById('createList2').addEventListener('click', function(){
 		let s = performance.now()
 		addList2()
-		console.log(performance.now()-s)
+		console.log((performance.now()-s))
 	})
-	// 一台垃圾电脑上xp系统测试修改颜色平均时间8ms左右;
-	// 。。。。。。。。。。。。修改颜色和添加边框平均时间45ms左右
+	document.getElementById('createList3').addEventListener('click', function(){
+		let s = performance.now()
+		addList3(1)
+		console.log((performance.now()-s))
+	})
+	/*
+	addList 没有传入getWidth只需要0.03秒左右
+					传入了getWidth只需要10秒左右
+	addLIst2 没有传入getWidth只需要9毫秒左右
+					 传入了getWidth只需要77毫秒左右
+	addList3 没有传入getWidth只需要26毫秒
+						传入了getWidth只需要377毫秒左右
+	!!!!!!!!所有没事不要瞎gb获取高度宽度什么的
+	*/
   </script>
 </body>
 </html>

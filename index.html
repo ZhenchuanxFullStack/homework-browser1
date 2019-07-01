@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Browser</title>
+</head>
+<body>
+    <button onclick="rank()">重排</button>  
+    <button onclick="noRank()">不重排</button>
+    <div id="wrap1">
+    </div>
+    <div id="wrap2">
+    </div>
+</body>
+<script>
+    function rank(){
+        var startTime = +new Date();
+        for(var i = 0;i<=15000;i++){
+            document.getElementById('wrap1').innerHTML += 'dom';
+            if(i == 15000){
+                let endTime = +new Date();
+                let gapTime = endTime - startTime;
+                console.log('优化前的时间差是：' + gapTime + 'ms');
+            }
+        }
+    }
+    function noRank(){
+        var startTime = +new Date();
+        var content = '';
+        for(var i = 0;i<=15000;i++){
+            content+='dom';
+        }
+        document.getElementById('wrap2').innerHTML += content;
+        let endTime = +new Date();
+        let gapTime = endTime - startTime;
+        console.log('优化后的时间差是：' + gapTime + 'ms');
+    }
+</script>
+</html>

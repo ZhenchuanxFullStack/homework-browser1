@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>重排和非重排</title>
+    <style>
+        #reset_list {
+            border: red;
+        }
+        #reset_list li {
+            display: none;
+        }
+        #not_reset_list li {
+            visibility: hidden;
+        }
+        #not_reset_list {
+            border: skyblue
+        }
+    </style>
+</head>
+<body>
+    <button onclick="reset()">发生重排列</button>
+    <button onclick="notReset()">不发生重排列</button>
+    <ul id="reset_list">
+
+    </ul>
+    <ul id="not_reset_list">
+
+    </ul>
+    
+    <script>
+        var resetList = document.querySelector('#reset_list');
+        var notResetList = document.querySelector('#not_reset_list');
+        
+        function createNode() {
+            var resetLiDoms = document.createDocumentFragment();
+            var notResetLiDoms = document.createDocumentFragment();     
+            for(let i = 0; i < 2000; i++) {
+                var resetNewLi = document.createElement('li');
+                var notResetNewLi = document.createElement('li');
+                resetNewLi.innerText = `reset我是用来测试的${i}`;
+                notResetNewLi.innerText = `notReset我是用来测试的${i}`;
+                resetLiDoms.appendChild(resetNewLi);
+                notResetLiDoms.appendChild(notResetNewLi);
+            }
+            resetList.appendChild(resetLiDoms);
+            notResetList.appendChild(notResetLiDoms);
+        }
+
+        createNode();
+
+        function reset() {
+            for(let i = 0; i < resetList.childNodes.length; i++) {
+                resetList.childNodes[i].style && (resetList.childNodes[i].style.display = 'block');
+            }
+        }
+        function notReset() {
+            for(let i = 0; i < resetLnotResetListist.childNodes.length; i++) {
+                notResetList.childNodes[i].style && (resetList.childNodes[i].style.visibility = 'show');
+            }
+        }
+
+    </script>
+</body>
+
+</html>

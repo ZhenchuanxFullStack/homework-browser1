@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>重绘测试</title>
+</head>
+<body>
+
+  <button type="button" id=btn-one>重绘</button>
+  <button type="button" id=btn-two>无重绘</button>
+
+
+  <ul id="container-one" class="container-one"></ul>
+  <ul id="container-two" class="container-two"></ul>
+
+  <script type="text/javascript">
+    'use strict';
+
+    const INNER_COUNT = 10000;
+
+    // 重绘测试函数
+    function innerElements() {
+      const containerOne = document.getElementById('container-one');
+
+      for(let i = 0; i < INNER_COUNT; i++) {
+        let liItemEl = document.createElement('li');
+        containerOne.appendChild(liItemEl);
+        liItemEl.style.height = 20 + 'px';
+      }
+    }
+
+    // 无重绘，使用文档一次插入
+    function innerFragment() {
+      const containerTwo = document.getElementById('container-two');
+      let frament = document.createDocumentFragment();
+
+      for(let i = 0; i < INNER_COUNT; i++) {
+        let liItemEl = document.createElement('li');
+        frament.appendChild(liItemEl);
+      }
+      containerTwo.appendChild(frament);
+    }
+
+    // 计算执行时间
+    function calcRunningTime(func) {
+      let sTime = new Date();
+      func();
+      let eTime = new Date();
+
+      return eTime.getTime() - sTime.getTime();
+    }
+
+    const btnOne = document.getElementById('btn-one');
+    btnOne.addEventListener('click', function(e) {
+      console.log(`执行重绘函数使用了${calcRunningTime(innerElements)}ms`);
+    });
+    const btnTwo = document.getElementById('btn-two');
+    btnTwo.addEventListener('click', function(e) {
+      console.log(`执行无重绘函数使用了${calcRunningTime(innerFragment)}ms`);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+如录制的性能表所示：1.当我点击发生重排按钮后：rendering:81.6ms,
+                2.当我点击不重排按钮后：rendering:18.7ms
+        其它时间比对：
+        重排   scriping:20.9ms,painting:7.3ms,other:41.6ms
+        不重排  scriping:22.8ms,painting:6.6ms,other:27.3ms
+
+
+        重排时间总时间：151.4ms   不重排总时间：75.4ms
+    从上面数据看出来，不重排总时间加起来也没有重排的时候渲染界面所用时间长。

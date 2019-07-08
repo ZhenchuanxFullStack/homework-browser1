@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>测试重绘重排</title>
+</head>
+
+<body>
+  <button onclick="refresh()">重排</button>
+  <button onclick="noRefresh()">无重排</button>
+
+  <ul id="list"></ul>
+</body>
+<script type="text/javascript">
+const listEl = document.getElementById("list");
+const LI_INSERT_NUM = 10000;
+
+function refresh() {
+  let startTime = Date.now()
+  for (let i = 0; i < LI_INSERT_NUM; i++) {
+    let singleLi = document.createElement('li');
+    listEl.appendChild(singleLi);
+    singleLi.style.height = "10px";
+  }
+  let endTime = Date.now();
+  console.log(endTime - startTime);
+}
+
+function noRefresh() {
+  let startTime = Date.now()
+  for (let i = 0; i < LI_INSERT_NUM; i++) {
+    let singleLi = document.createElement('li');
+    listEl.appendChild(singleLi);
+  }
+  let endTime = Date.now();
+  console.log(endTime - startTime);
+}
+</script>
+
+</html>
